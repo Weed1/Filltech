@@ -1,1 +1,33 @@
 Set ONT ZTE
+
+#login telnet lewat mikrotik
+
+#set vlan port uplink
+sh run int gpon-olt/1/1/1
+conf t
+int gpon-olt/1/1/1
+switchport vlan 231 tag
+
+#set onu TYPE
+show onu-type gpon ALL
+conf t
+pon
+onu-type ZTE-F609 gpon
+onu-type-if ZTE-F609 eth0/1-4
+onu-type-if ZTE-F609 wifi0/1-4
+
+#set onu vlan profile
+conft
+gpon
+onu profile vlan F20M tag-mode tag cvlan 231 pri 7
+
+#set interface onu
+show pon onu uncfg
+show run interface gpon-olt_1/1/1
+conf t
+int gpon-olt_1/1/1
+onu 28 type ZTE-F609 sn HWTC2953C9AA
+
+#set interface virtual onu
+int gpon-olt_1/1/1:28
+
